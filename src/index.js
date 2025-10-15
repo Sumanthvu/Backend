@@ -33,9 +33,6 @@ const  app=express()
 
 */
 
-
-
-
 //Approach 2
 
 //We will connect the database in a different file inside the DB folder
@@ -43,14 +40,21 @@ const  app=express()
 
 // require('dotenv').config({path: './env'})
 
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 dotenv.config({
-    path: './env'
-})
+  path: "./env",
+});
 
-import connectDB from './db/index.js';
-import { request } from 'express';
+import connectDB from "./db/index.js";
+import express from "express";
+const app = express();
 
-
-
-connectDB();
+connectDB()
+  .then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server is running at port : ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Mongo DB connection failed ", error);
+  });
