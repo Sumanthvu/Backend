@@ -2,7 +2,8 @@
 
 const asyncHandler = (requestHandler) => {
   (req, res, next) => {
-    Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
+    Promise.resolve(requestHandler(req, res, next))
+    .catch((err) => next(err));
   };
 };
 
@@ -10,7 +11,7 @@ export { asyncHandler };
 
 //below is just a wrapper function
 //meaning wherever in the code part we want to use async await the we will use
-//the beow utility by just passinng the function and the below part will wrap the function with async await
+//the below utility by just passinng the function and the below part will wrap the function with async await
 //this maintains consistency across the project
 //wkt const asyncHandler = () => {}
 // now if we want to pass a function
