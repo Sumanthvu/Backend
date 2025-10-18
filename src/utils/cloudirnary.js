@@ -7,25 +7,22 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-//here localfilepath means the path inn which multer stored the file in the server temporarily
-//here we are saving in ./public/temp path
 const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
-    //upload file on cloudinary
+    //upload the file on cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto", //auto will detect the type of file automatically
+      resource_type: "auto",
     });
-
-    //once uploaded we can delete the locally the stored file
-    // fs.unlinkSync(localFilePath);
-
-    //file is uploaded successfully
-    console.log("File uploaded on cloudinary");
-    console.log("The url of the uploaded file is: ", response.url);
+    // file has been uploaded successfull
+    //console.log("file is uploaded on cloudinary ", response.url);
+    fs.unlinkSync(localFilePath);
     return response;
-  } catch {
-    fs.unlinkSync(localFilePath); // remove the locally saved temporarily file as the upload operation got failed
+  } catch (error) {
+    console.error("❌ Cloudinary upload failed:", error.message);
+    // remove the locally saved temporary file as the upload operation got failed
+    fs.unlinkSync(localFilePath); 
+    return null;
   }
 };
 
